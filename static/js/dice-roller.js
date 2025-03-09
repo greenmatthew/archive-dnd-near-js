@@ -1,6 +1,7 @@
 /**
  * Dice Roller Module
  * Handles all dice rolling functionality for the DnD-Near app.
+ * Uses dice-utils.js for dice rolling operations.
  */
 
 // Global variables
@@ -29,48 +30,6 @@ function setupDiceRoller() {
                     if (b.hasAttribute('data-dice')) {
                         b.style.backgroundColor = '#5a189a';
                     }
-
-/**
- * Roll dice with the specified parameters
- * @param {number} sides - Number of sides on the dice
- * @param {number} quantity - Number of dice to roll
- * @param {number} modifier - Modifier to add to the result
- * @returns {Object} Result object with rolls, total, and formatted string
- */
-function rollDice(sides, quantity, modifier) {
-    const rolls = [];
-    let total = 0;
-    
-    for (let i = 0; i < quantity; i++) {
-        const roll = Math.floor(Math.random() * sides) + 1;
-        rolls.push(roll);
-        total += roll;
-    }
-    
-    // Add modifier
-    const finalTotal = total + modifier;
-    
-    // Build result string
-    let resultString = '';
-    if (quantity > 1) {
-        resultString = `${rolls.join(' + ')}`;
-        if (modifier !== 0) {
-            resultString += ` ${modifier >= 0 ? '+' : ''} ${modifier}`;
-        }
-        resultString += ` = ${finalTotal}`;
-    } else if (modifier !== 0) {
-        resultString = `${total} ${modifier >= 0 ? '+' : ''} ${modifier} = ${finalTotal}`;
-    } else {
-        resultString = `${total}`;
-    }
-    
-    // Return results
-    return {
-        rolls: rolls,
-        total: finalTotal,
-        resultString: resultString
-    };
-}
                 });
                 
                 // Highlight selected button
@@ -84,13 +43,14 @@ function rollDice(sides, quantity, modifier) {
         const quantity = parseInt(document.getElementById('dice-quantity').value) || 1;
         const modifier = parseInt(document.getElementById('modifier').value) || 0;
         
-        const result = rollDice(selectedDice, quantity, modifier);
+        // Use the new dice utility functions to roll dice
+        const rolls = rollDiceAndGetResult(selectedDice, quantity, modifier);
         
-        document.getElementById('result').textContent = result.total;
-        document.getElementById('result-details').textContent = `${quantity}d${selectedDice}${modifier >= 0 ? '+' : ''}${modifier}: ${result.resultString}`;
+        document.getElementById('result').textContent = rolls.finalTotal;
+        document.getElementById('result-details').textContent = `${quantity}d${selectedDice}${modifier >= 0 ? '+' : ''}${modifier}: ${rolls.resultString}`;
         
         // Add to history
-        addToHistory(`${quantity}d${selectedDice}${modifier !== 0 ? (modifier >= 0 ? '+' : '') + modifier : ''}: ${result.resultString}`);
+        addToHistory(`${quantity}d${selectedDice}${modifier !== 0 ? (modifier >= 0 ? '+' : '') + modifier : ''}: ${rolls.resultString}`);
     });
     
     // Handle custom roll button
@@ -99,12 +59,53 @@ function rollDice(sides, quantity, modifier) {
         const sides = parseInt(document.getElementById('custom-dice').value) || 20;
         const modifier = parseInt(document.getElementById('custom-modifier').value) || 0;
         
-        const result = rollDice(sides, quantity, modifier);
+        // Use the new dice utility functions to roll dice
+        const rolls = rollDiceAndGetResult(sides, quantity, modifier);
         
-        document.getElementById('result').textContent = result.total;
-        document.getElementById('result-details').textContent = `${quantity}d${sides}${modifier >= 0 ? '+' : ''}${modifier}: ${result.resultString}`;
+        document.getElementById('result').textContent = rolls.finalTotal;
+        document.getElementById('result-details').textContent = `${quantity}d${sides}${modifier >= 0 ? '+' : ''}${modifier}: ${rolls.resultString}`;
         
         // Add to history
-        addToHistory(`${quantity}d${sides}${modifier !== 0 ? (modifier >= 0 ? '+' : '') + modifier : ''}: ${result.resultString}`);
+        addToHistory(`${quantity}d${sides}${modifier !== 0 ? (modifier >= 0 ? '+' : '') + modifier : ''}: ${rolls.resultString}`);
     });
+}
+
+/**
+ * Roll dice and format the results using the dice utility functions
+ * @param {number} sides - Number of sides on the dice
+ * @param {number} quantity - Number of dice to roll
+ * @param {number} modifier - Modifier to add to the result
+ * @returns {Object} Result object with rolls, finalTotal, and formatted resultString
+ */
+function rollDiceAndGetResult(sides, quantity, modifier) {
+    // Get array of dice rolls using the dice-utils function
+    const diceResults = rollDice(sides, quantity);
+    
+    // Calculate the total of all dice
+    const diceTotal = diceResults.reduce((sum, roll) => sum + roll, 0);
+    
+    // Add modifier
+    const finalTotal = diceTotal + modifier;
+    
+    // Build result string
+    let resultString = '';
+    if (quantity > 1) {
+        resultString = `${diceResults.join(' + ')}`;
+        if (modifier !== 0) {
+            resultString += ` ${modifier >= 0 ? '+' : ''} ${modifier}`;
+        }
+        resultString += ` = ${finalTotal}`;
+    } else if (modifier !== 0) {
+        resultString = `${diceTotal} ${modifier >= 0 ? '+' : ''} ${modifier} = ${finalTotal}`;
+    } else {
+        resultString = `${diceTotal}`;
+    }
+    
+    // Return results
+    return {
+        rolls: diceResults,
+        diceTotal: diceTotal,
+        finalTotal: finalTotal,
+        resultString: resultString
+    };
 }
