@@ -72,7 +72,7 @@ function addToHistory(text) {
     historyList.prepend(entry);
     
     // Limit history to 10 entries
-    if (historyList.children.length > 10) {
+    if (historyList.children.length > 20) {
         historyList.removeChild(historyList.lastChild);
     }
 }
