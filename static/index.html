@@ -7,15 +7,13 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header class="site-header">
-        <div class="logo-container">
-            <img src="img/dnd-near-logo.svg" type="image/svg" alt="D&D Near Logo">
-        </div>
-        <h1>D&D Near</h1>
-    </header>
-
     <main class="dnd-calculator">
-        <h2 class="calculator-title">Tool Suite</h2>
+        <!-- Integrated logo and title into the main panel -->
+        <div class="calculator-header">
+            <div class="logo-container">
+                <img src="img/dnd-near-logo.svg" type="image/svg" alt="D&D Near Logo">
+            </div>
+        </div>
         
         <div class="tab-container">
             <div class="tab-buttons">
@@ -232,7 +230,7 @@
             <h3>Roll History</h3>
             <div class="history-list" id="history-list"></div>
         </div>
-    </div>
+    </main>
 
     <!-- JavaScript files -->
     <script src="js/dice-roller.js"></script>
