@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup the weapon calculator
     setupWeaponCalculator();
+    
+    // Setup feature tooltips
+    setupFeatureTooltips();
 });
 
 /**
@@ -72,4 +75,58 @@ function addToHistory(text) {
     if (historyList.children.length > 10) {
         historyList.removeChild(historyList.lastChild);
     }
+}
+
+/**
+ * Setup Feature Info Tooltips
+ * Handles the display and hiding of feature information tooltips
+ */
+function setupFeatureTooltips() {
+    const featureInfoIcons = document.querySelectorAll('.feature-info');
+    let activeTooltip = null;
+    
+    // Show tooltip when info icon is clicked
+    featureInfoIcons.forEach(icon => {
+        icon.addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevent click from reaching document
+            
+            const featureId = this.getAttribute('data-feature');
+            const tooltip = document.getElementById(`${featureId}-tooltip`);
+            
+            // If there's an active tooltip and it's not this one, hide it
+            if (activeTooltip && activeTooltip !== tooltip) {
+                activeTooltip.classList.remove('visible');
+            }
+            
+            // Toggle the current tooltip
+            tooltip.classList.toggle('visible');
+            
+            // Update active tooltip reference
+            activeTooltip = tooltip.classList.contains('visible') ? tooltip : null;
+        });
+    });
+    
+    // Hide tooltips when clicking elsewhere on the document
+    document.addEventListener('click', function() {
+        if (activeTooltip) {
+            activeTooltip.classList.remove('visible');
+            activeTooltip = null;
+        }
+    });
+    
+    // Prevent tooltip from closing when clicked
+    const tooltips = document.querySelectorAll('.feature-tooltip');
+    tooltips.forEach(tooltip => {
+        tooltip.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+    
+    // Hide tooltip when ESC key is pressed
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && activeTooltip) {
+            activeTooltip.classList.remove('visible');
+            activeTooltip = null;
+        }
+    });
 }

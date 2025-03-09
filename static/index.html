@@ -132,21 +132,67 @@
                     
                     <div class="combat-features">
                         <h4>Combat Features</h4>
+                        
+                        <!-- Weapon Mastery -->
                         <div class="feature-checkbox">
                             <input type="checkbox" id="weapon-mastery" name="weapon-mastery">
                             <label for="weapon-mastery">Greatsword Weapon Mastery (Proficient)</label>
+                            <span class="feature-info" data-feature="weapon-mastery">i</span>
+                            <div class="feature-tooltip" id="weapon-mastery-tooltip">
+                                <h5>Greatsword Weapon Mastery</h5>
+                                <p class="prerequisites">Prerequisite: Proficiency with greatswords</p>
+                                <div class="benefit">
+                                    <p>Your training with weapons allows you to use the mastery property of Greatswords:</p>
+                                    <p class="benefit-item"><strong>Graze.</strong> If your attack roll with a Greatsword misses a creature, you can deal damage to that creature equal to the ability modifier you used to make the attack roll. This damage is the same type dealt by the Greatsword, and the damage can be increased only by increasing the ability modifier.</p>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <!-- Great Weapon Master -->
                         <div class="feature-checkbox">
                             <input type="checkbox" id="great-weapon-master" name="great-weapon-master">
                             <label for="great-weapon-master">Great Weapon Master</label>
+                            <span class="feature-info" data-feature="great-weapon-master">i</span>
+                            <div class="feature-tooltip" id="great-weapon-master-tooltip">
+                                <h5>Great Weapon Master</h5>
+                                <p class="prerequisites">Prerequisite: Level 4+, Strength 13+</p>
+                                <div class="benefit">
+                                    <p>You gain the following benefits:</p>
+                                    <p class="benefit-item"><strong>Ability Score Increase.</strong> Increase your Strength score by 1, to a maximum of 20.</p>
+                                    <p class="benefit-item"><strong>Heavy Weapon Mastery.</strong> When you hit a creature with a weapon that has the Heavy property as part of the Attack action on your turn, you can cause the weapon to deal extra damage to the target. The extra damage equals your Proficiency Bonus.</p>
+                                    <p class="benefit-item"><strong>Hew.</strong> Immediately after you score a Critical Hit with a Melee weapon or reduce a creature to 0 Hit Points with one, you can make one attack with the same weapon as a Bonus Action.</p>
+                                    <p class="action">Hew: 1 Bonus Action</p>
+                                    <p class="action">Heavy Weapon Mastery: 1 Action</p>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <!-- Great Weapon Fighting -->
                         <div class="feature-checkbox">
                             <input type="checkbox" id="great-weapon-fighting" name="great-weapon-fighting">
                             <label for="great-weapon-fighting">Great Weapon Fighting</label>
+                            <span class="feature-info" data-feature="great-weapon-fighting">i</span>
+                            <div class="feature-tooltip" id="great-weapon-fighting-tooltip">
+                                <h5>Great Weapon Fighting</h5>
+                                <p class="prerequisites">Fighting Style Feat (Prerequisite: Fighting Style Feature)</p>
+                                <div class="benefit">
+                                    <p>When you roll damage for an attack you make with a Melee weapon that you are holding with two hands, you can treat any 1 or 2 on a damage die as a 3. The weapon must have the Two-Handed or Versatile property to gain this benefit.</p>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <!-- Savage Attacker -->
                         <div class="feature-checkbox">
                             <input type="checkbox" id="savage-attacker" name="savage-attacker">
                             <label for="savage-attacker">Savage Attacker</label>
+                            <span class="feature-info" data-feature="savage-attacker">i</span>
+                            <div class="feature-tooltip" id="savage-attacker-tooltip">
+                                <h5>Savage Attacker</h5>
+                                <p class="prerequisites">Soldier Origin Feat</p>
+                                <div class="benefit">
+                                    <p>You've trained to deal particularly damaging strikes. Once per turn when you hit a target with a weapon, you can roll the weapon's damage dice twice and use either roll against the target.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     

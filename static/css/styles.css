@@ -431,3 +431,99 @@ label {
 .damage-roll-button {
     margin-top: 15px;  /* Add space above the damage roll button */
 }
+
+/* Combat Feature Dropdown Styling */
+.feature-checkbox {
+    position: relative;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.feature-checkbox input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.feature-info {
+    margin-left: 5px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: #9d4edd;
+    color: white;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.feature-tooltip {
+    position: absolute;
+    left: 30px;
+    top: 100%;
+    z-index: 10;
+    background-color: #3a3a3c;
+    color: #e0e0e0;
+    border: 1px solid #9d4edd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+    font-size: 0.9em;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+.feature-tooltip.visible {
+    display: block;
+}
+
+.feature-tooltip h5 {
+    color: #9d4edd;
+    margin-top: 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #9d4edd;
+    padding-bottom: 5px;
+}
+
+.feature-tooltip p {
+    margin: 5px 0;
+}
+
+.feature-tooltip .prerequisites {
+    font-style: italic;
+    color: #b0b0b0;
+    font-size: 0.9em;
+}
+
+.feature-tooltip .benefit {
+    margin-top: 8px;
+}
+
+.feature-tooltip .benefit-item {
+    margin-top: 5px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.feature-tooltip .benefit-item::before {
+    content: "•";
+    position: absolute;
+    left: 5px;
+    color: #9d4edd;
+}
+
+.feature-tooltip .action {
+    margin-top: 5px;
+    font-weight: bold;
+    color: #9d4edd;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+    .feature-tooltip {
+        width: 250px;
+        left: 0;
+    }
+}
