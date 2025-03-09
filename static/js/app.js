@@ -50,8 +50,12 @@ function addToHistory(text) {
     const historyList = document.getElementById('history-list');
     const entry = document.createElement('div');
     
-    // Add timestamp
-    const timestamp = new Date().toLocaleTimeString();
+    // Add timestamp in 24-hour format
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const timestamp = `${hours}:${minutes}:${seconds}`;
     
     // Check if the text contains new lines
     if (text.includes('\n')) {
@@ -71,7 +75,7 @@ function addToHistory(text) {
     
     historyList.prepend(entry);
     
-    // Limit history to 10 entries
+    // Limit history to 20 entries
     if (historyList.children.length > 20) {
         historyList.removeChild(historyList.lastChild);
     }
