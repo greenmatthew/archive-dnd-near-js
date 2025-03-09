@@ -426,3 +426,8 @@ label {
     color: #9d4edd;
     font-size: 0.9em;
 }
+
+/* Fix spacing between Roll to Hit and Roll Damage buttons */
+.damage-roll-button {
+    margin-top: 15px;  /* Add space above the damage roll button */
+}
