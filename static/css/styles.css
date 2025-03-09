@@ -345,32 +345,84 @@ label {
     color: #e0e0e0; /* Light text color */
 }
 
-/* Additional SVG controls to ensure proper sizing and visibility */
-svg.damage-icon {
-    max-width: 16px;
-    max-height: 16px;
-}
-
-.damage-type svg, 
-.damage-value svg {
-    width: 14px;
-    height: 14px;
+/* Damage icon sizing based on context */
+.damage-icon {
+    display: inline-block;
     vertical-align: middle;
 }
 
-.damage-type svg.lightning-icon, 
-.damage-value svg.lightning-icon {
+/* Default size for damage icons */
+.slashing-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.lightning-icon {
     width: 12px;
     height: 14px;
 }
 
-/* SVG fill color for visibility against dark background */
-.damage-icon path {
-    fill: #ffffff; /* White fill color for visibility */
+/* Different sizes based on context */
+.result-display .damage-icon {
+    width: 18px;
+    height: 18px;
 }
 
-/* Ensure all SVG paths in the dice roller are visible */
-.slashing-icon path, 
-.lightning-icon path {
-    fill: #ffffff; /* White fill for visibility */
+.result-display .lightning-icon {
+    width: 15px;
+    height: 18px;
+}
+
+.history-list .damage-icon {
+    width: 12px;
+    height: 12px;
+}
+
+.history-list .lightning-icon {
+    width: 10px;
+    height: 12px;
+}
+
+/* Property section icons */
+.property .damage-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.property .lightning-icon {
+    width: 12px;
+    height: 14px;
+}
+
+/* Ensure all SVG elements have proper coloring */
+.damage-icon {
+    filter: brightness(0) invert(1); /* Makes the icons white */
+}
+
+/* Style for the history list to make details more readable */
+.history-details {
+    margin-left: 20px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 2px solid #5a189a;
+    font-size: 0.9em;
+    color: #c0c0c0;
+}
+
+/* Ensure history entries are properly spaced */
+#history-list > div {
+    padding: 8px 5px;
+    border-bottom: 1px solid #3a3a3c;
+}
+
+#history-list > div:first-child {
+    border-top: 1px solid #3a3a3c;
+}
+
+/* Make timestamp slightly less prominent */
+#history-list [class^="timestamp"], 
+#history-list span.timestamp {
+    color: #9d4edd;
+    font-size: 0.9em;
 }
