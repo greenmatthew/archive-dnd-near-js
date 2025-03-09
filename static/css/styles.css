@@ -1,21 +1,37 @@
-/* Main Container Styling */
+/* Main Container Styling - Updated for better contrast */
 .dnd-calculator {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: #242527; /* Darker background for better contrast */
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    color: #ffffff; /* Light text color for dark background */
 }
 
 .calculator-title {
     text-align: center;
-    color: #7b2cbf;
+    color: #9d4edd; /* Brighter purple for better visibility */
     margin-bottom: 20px;
 }
 
-/* Tab Styling */
+/* Calculator Header - Updated for Logo visibility */
+.calculator-header {
+    background-color: #121212; /* Dark background behind logo */
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+    margin: -20px -20px 20px -20px;
+    text-align: center;
+}
+
+.logo-container {
+    background-color: #121212; /* Dark background for logo container */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Tab Styling - Updated for better visibility */
 .tab-container {
     width: 100%;
     margin-bottom: 20px;
@@ -23,29 +39,30 @@
 
 .tab-buttons {
     display: flex;
-    border-bottom: 2px solid #7b2cbf;
+    border-bottom: 2px solid #9d4edd; /* Brighter purple border */
 }
 
 .tab-button {
     padding: 10px 20px;
-    background-color: #e6e6e6;
+    background-color: #3a3a3c; /* Darker tab background */
     border: none;
     border-radius: 5px 5px 0 0;
     cursor: pointer;
     margin-right: 5px;
     font-weight: bold;
+    color: #e0e0e0; /* Light text for dark background */
     transition: all 0.3s ease;
 }
 
 .tab-button.active {
-    background-color: #7b2cbf;
+    background-color: #9d4edd; /* Brighter purple for active tab */
     color: white;
 }
 
 .tab-content {
     display: none;
     padding: 20px;
-    background-color: white;
+    background-color: #2d2d30; /* Darker content background */
     border-radius: 0 0 5px 5px;
 }
 
@@ -53,7 +70,7 @@
     display: block;
 }
 
-/* Dice Roller Styling */
+/* Dice Roller Styling - Updated colors */
 .dice-section {
     display: flex;
     justify-content: space-between;
@@ -66,7 +83,7 @@
     flex-grow: 1;
     padding: 10px;
     margin: 5px;
-    background-color: #5a189a;
+    background-color: #5a189a; /* Original purple color */
     color: white;
     border: none;
     border-radius: 5px;
@@ -75,7 +92,7 @@
 }
 
 .dice-button:hover {
-    background-color: #3c096c;
+    background-color: #7b2cbf; /* Lighter purple for hover */
 }
 
 .modifier-section {
@@ -85,15 +102,27 @@
 .modifier-input {
     width: 60px;
     padding: 8px;
-    border: 1px solid #ccc;
+    border: 1px solid #9d4edd; /* Brighter purple border */
     border-radius: 4px;
+    background-color: #3a3a3c; /* Darker input background */
+    color: #ffffff; /* Light text color */
+}
+
+.quantity-input {
+    width: 40px;
+    padding: 8px;
+    border: 1px solid #9d4edd; /* Brighter purple border */
+    border-radius: 4px;
+    background-color: #3a3a3c; /* Darker input background */
+    color: #ffffff; /* Light text color */
+    margin-right: 5px;
 }
 
 .roll-button {
     display: block;
     width: 100%;
     padding: 12px;
-    background-color: #7b2cbf;
+    background-color: #9d4edd; /* Brighter purple for button */
     color: white;
     border: none;
     border-radius: 5px;
@@ -103,7 +132,7 @@
 }
 
 .roll-button:hover {
-    background-color: #5a189a;
+    background-color: #7b2cbf; /* Original purple color */
 }
 
 .result-section {
@@ -114,102 +143,40 @@
 .result-display {
     font-size: 24px;
     font-weight: bold;
-    color: #3c096c;
+    color: #e0e0e0; /* Light color for visibility */
     margin-bottom: 10px;
 }
 
 .result-details {
-    color: #666;
+    color: #b0b0b0; /* Light gray for details */
 }
 
-.quantity-input {
-    width: 40px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 5px;
-}
-
-.advanced-section {
-    margin-top: 20px;
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
-}
-
-.custom-roll-section {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.custom-roll-section input, .custom-roll-section select {
-    margin-right: 10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* Custom Calculator Styling */
-.custom-calculator {
-    margin-top: 10px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.form-control {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.form-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.form-row .form-group {
-    flex: 1;
-    margin-bottom: 0;
-}
-
-/* History Section */
+/* History Section - Updated for better contrast */
 .history-section {
     margin-top: 20px;
     padding-top: 10px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #9d4edd; /* Brighter purple border */
 }
 
 .history-list {
     max-height: 150px;
     overflow-y: auto;
     padding: 10px;
-    background-color: white;
+    background-color: #1e1e1e; /* Very dark background */
     border-radius: 4px;
     font-size: 14px;
+    color: #e0e0e0; /* Light text color */
 }
 
-/* Solstora Weapon Styling */
+/* Customizations for Solstora Weapon tab */
 .solstora-description {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #f9f4ff;
+    background-color: #2d2d30; /* Darker background */
     border-radius: 8px;
-    border-left: 4px solid #7b2cbf;
+    border-left: 4px solid #9d4edd; /* Brighter purple border */
 }
 
 .item-image-container {
@@ -217,117 +184,75 @@
     margin-bottom: 15px;
 }
 
-.item-image {
-    max-width: 200px;
-    height: auto;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
 .item-description {
     font-style: italic;
-    color: #333;
+    color: #e0e0e0; /* Light text color */
     line-height: 1.5;
-}
-
-.item-description p {
-    margin-bottom: 10px;
 }
 
 .weapon-type {
     font-weight: bold;
-    color: #5a189a;
+    color: #9d4edd; /* Brighter purple */
     margin-top: 0;
     margin-bottom: 12px;
 }
 
-.weapon-properties {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 15px;
-    font-size: 14px;
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #9d4edd; /* Brighter purple border */
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #3a3a3c; /* Darker input background */
+    color: #ffffff; /* Light text color */
 }
 
-.property {
-    margin-bottom: 5px;
+/* Other form elements */
+input[type="number"], select {
+    background-color: #3a3a3c; /* Darker input background */
+    color: #ffffff; /* Light text color */
+    border: 1px solid #9d4edd; /* Brighter purple border */
 }
 
-.damage-type {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 4px;
+label {
+    color: #e0e0e0; /* Light text color for labels */
 }
 
-.damage-icon {
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
+/* Adjust other input elements */
+#custom-dice, #custom-modifier, #custom-quantity {
+    background-color: #3a3a3c; /* Darker input background */
+    color: #ffffff; /* Light text color */
+    border: 1px solid #9d4edd; /* Brighter purple border */
 }
 
-.slashing-icon {
-    width: 18px;
-}
-
-.lightning-icon {
-    width: 12px;
-}
-
+/* Combat features section */
 .combat-features {
     margin: 20px 0;
     padding: 15px;
-    background-color: #f0f0f0;
+    background-color: #2d2d30; /* Darker background */
     border-radius: 5px;
+    border: 1px solid #5a189a; /* Subtle border */
 }
 
 .combat-features h4 {
     margin-top: 0;
     margin-bottom: 10px;
-    color: #3c096c;
+    color: #9d4edd; /* Brighter purple */
 }
 
-.feature-checkbox {
-    margin-bottom: 8px;
-}
-
-.feature-checkbox label {
-    margin-left: 5px;
-    cursor: pointer;
-}
-
-.damage-roll-button {
-    margin-top: 10px;
-    background-color: #5a189a;
-}
-
-.damage-roll-button:hover {
-    background-color: #3c096c;
-}
-
-.damage-row {
-    grid-column: span 2;
-}
-
-.damage-value {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 4px;
-}
-
+/* Roll options styling */
 .roll-options {
     margin: 15px 0;
     padding: 10px;
-    background-color: #f9f4ff;
+    background-color: #2d2d30; /* Darker background */
     border-radius: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #5a189a; /* Subtle border */
 }
 
 .roll-option-title {
     font-weight: bold;
     margin-bottom: 10px;
-    color: #5a189a;
+    color: #9d4edd; /* Brighter purple */
 }
 
 .roll-options-container {
@@ -352,9 +277,14 @@
     align-items: center;
 }
 
-.roll-option-card input {
-    position: absolute;
-    opacity: 0;
+/* Modified to keep radio buttons visible */
+.roll-option-card input[type="radio"] {
+    /* Make radio buttons visible but keep them out of the way */
+    position: relative;
+    opacity: 1;
+    width: 0px;
+    height: 0px;
+    margin: 0;
     cursor: pointer;
 }
 
@@ -365,6 +295,21 @@
     margin-bottom: 5px;
     position: relative;
     z-index: 1;
+}
+
+.option-label {
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    color: #e0e0e0; /* Light color for visibility */
+}
+
+.option-icon svg {
+    width: 100%;
+    height: 100%;
+    max-width: 32px;
+    max-height: 32px;
 }
 
 .advantage-icon svg {
@@ -379,63 +324,45 @@
     fill: #b00000;
 }
 
-.option-label {
-    font-size: 12px;
-    text-align: center;
-    position: relative;
-    z-index: 1;
+/* Add visual indicator for selected radio option */
+.roll-option-card input[type="radio"]:checked + .option-content {
+    background-color: rgba(157, 78, 221, 0.3); /* Subtle purple highlight */
+    border-radius: 4px;
+    padding: 4px;
+    margin: -4px;
 }
 
-.roll-option-card input:checked ~ .option-content .option-label {
-    font-weight: bold;
-    color: #5a189a;
+/* Add styles to ensure text is readable on dark background */
+.property {
+    color: #e0e0e0; /* Light text color */
 }
 
-.roll-option-card input:checked ~ .option-content .option-icon {
-    transform: scale(1.2);
+/* Additional SVG controls to ensure proper sizing and visibility */
+svg.damage-icon {
+    max-width: 16px;
+    max-height: 16px;
 }
 
-.roll-option-card input:checked {
-    background-color: #e0d0ff;
-    border: 2px solid #7b2cbf;
+.damage-type svg, 
+.damage-value svg {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
 }
 
-.roll-option-card input:checked ~ .option-content::before {
-    content: "";
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background-color: #e0d0ff;
-    border-radius: 5px;
-    border: 2px solid #7b2cbf;
-    z-index: -1;
+.damage-type svg.lightning-icon, 
+.damage-value svg.lightning-icon {
+    width: 12px;
+    height: 14px;
 }
 
-/* Mobile Responsive */
-@media (max-width: 600px) {
-    .custom-roll-section {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .custom-roll-section input, 
-    .custom-roll-section select,
-    .custom-roll-section button {
-        margin: 5px 0;
-        width: 100%;
-    }
-    
-    .form-row {
-        flex-direction: column;
-    }
-    
-    .solstora-description {
-        flex-direction: column;
-    }
-    
-    .item-image {
-        max-width: 100%;
-    }
+/* SVG fill color for visibility against dark background */
+.damage-icon path {
+    fill: #ffffff; /* White fill color for visibility */
+}
+
+/* Ensure all SVG paths in the dice roller are visible */
+.slashing-icon path, 
+.lightning-icon path {
+    fill: #ffffff; /* White fill for visibility */
 }
