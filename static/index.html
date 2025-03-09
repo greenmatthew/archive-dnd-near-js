@@ -255,6 +255,22 @@
                         <div class="roll-option-title">Damage Roll Type:</div>
                         <div class="roll-options-container">
                             <label class="roll-option-card">
+                                <input type="radio" name="damage-roll-type" value="critical" id="damage-roll-critical">
+                                <div class="radio-indicator"></div>
+                                <div class="option-content">
+                                    <div class="option-icon critical-icon">
+                                        <svg viewBox="0 0 48 48">
+                                            <g>
+                                                <circle cx="24" cy="24" r="22" fill="#FF5555" stroke="#FFFFFF" stroke-width="2"/>
+                                                <path d="M24 10L26 18H34L28 24L30 32L24 28L18 32L20 24L14 18H22L24 10Z" fill="#FFFFFF"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="option-label">Critical Hit</div>
+                                </div>
+                            </label>
+
+                            <label class="roll-option-card">
                                 <input type="radio" name="damage-roll-type" value="normal" id="damage-roll-normal" checked>
                                 <div class="radio-indicator"></div>
                                 <div class="option-content">
@@ -268,18 +284,20 @@
                             </label>
                             
                             <label class="roll-option-card">
-                                <input type="radio" name="damage-roll-type" value="critical" id="damage-roll-critical">
+                                <input type="radio" name="damage-roll-type" value="graze" id="damage-roll-graze">
                                 <div class="radio-indicator"></div>
                                 <div class="option-content">
-                                    <div class="option-icon critical-icon">
+                                    <div class="option-icon graze-icon">
                                         <svg viewBox="0 0 48 48">
                                             <g>
-                                                <circle cx="24" cy="24" r="22" fill="#FF5555" stroke="#FFFFFF" stroke-width="2"/>
-                                                <path d="M24 10L26 18H34L28 24L30 32L24 28L18 32L20 24L14 18H22L24 10Z" fill="#FFFFFF"/>
+                                                <circle cx="24" cy="24" r="20" fill="#3a3a3c" stroke="#FFFFFF" stroke-width="2"/>
+                                                <path d="M14 24H34" stroke="#9d4edd" stroke-width="4" stroke-linecap="round"/>
+                                                <path d="M18 16L14 24L18 32" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+                                                <path d="M30 16L34 24L30 32" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
                                             </g>
                                         </svg>
                                     </div>
-                                    <div class="option-label">Critical Hit</div>
+                                    <div class="option-label">Graze (Miss)</div>
                                 </div>
                             </label>
                         </div>

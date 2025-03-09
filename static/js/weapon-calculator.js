@@ -98,9 +98,6 @@ function rollWeaponAttack() {
         resultDetails = `2d20 (${rolls[0]}, ${rolls[1]}) take lower`;
     }
 
-    // Force 20 for debugging
-    d20Roll = 20;
-    
     const totalMod = calculateTotalAttackMod();
     const totalAttack = d20Roll + totalMod;
     
@@ -134,10 +131,15 @@ function rollWeaponDamage() {
     
     const strMod = calculateStrMod();
     const profBonus = parseInt(document.getElementById('prof-bonus').value) || 2;
+    const totalMod = calculateTotalAttackMod();
     
-    // Check if this is a critical hit
+    // Check which damage roll type was selected
     const attackType = document.querySelector('input[name="damage-roll-type"]:checked').value;
     const isCritical = attackType === 'critical';
+    const isGraze = attackType === 'graze';
+    
+    // Check if weapon mastery is active for Graze damage
+    const hasWeaponMastery = document.getElementById('weapon-mastery').checked;
     
     // Check which combat features are active
     const isGWM = document.getElementById('great-weapon-master').checked;
@@ -154,15 +156,52 @@ function rollWeaponDamage() {
     
     // Initialize variables
     let slashingDamage = 0;
+    let lightningDamage = 0;
     let diceTotal = 0;
     let chosenRoll = 1; // For Savage Attacker: 1 or 2
-    
-    // Roll for lightning damage (affected by critical hit)
-    // If critical, roll 2d6 instead of 1d6
-    let lightningDamage = 0;
     let lightningRolls = [];
     
-    // Base number of dice
+    // Handle Graze damage (only applies Strength modifier)
+    if (isGraze) {
+        if (!hasWeaponMastery) {
+            // If weapon mastery isn't active, show a message and return
+            document.getElementById('attack-result').textContent = "Graze damage requires Greatsword Weapon Mastery to be active";
+            document.getElementById('attack-result-details').textContent = "Please enable Greatsword Weapon Mastery to use Graze damage";
+            
+            addToHistory("Attempted to use Graze damage without Greatsword Weapon Mastery enabled");
+            return;
+        }
+        
+        // Graze damage is just the Strength modifier for slashing damage
+        slashingDamage = totalMod;
+        lightningDamage = 0; // No lightning damage on graze
+        
+        // Add to damage breakdown
+        damageBreakdown.push(`${strMod} (from Strength Modifier) ${slashingIcon} Slashing`);
+        
+        // Create history text for Graze damage
+        let historyHeader = `GRAZE! Damage roll (Strength modifier only): `;
+        let historyText = `${historyHeader}${slashingDamage} ${slashingIcon} Slashing`;
+        
+        // Add damage breakdown
+        historyText += `\n${damageBreakdown.join('\n')}`;
+        
+        // Update result display
+        document.getElementById('attack-result').innerHTML = `${slashingDamage} ${slashingIcon} Slashing`;
+        document.getElementById('attack-result-details').textContent = "Graze damage: On a miss, deal damage equal to your Strength modifier";
+        
+        addToHistory(historyText);
+        
+        // Reset to normal damage roll after completion
+        document.getElementById('damage-roll-normal').checked = true;
+        
+        console.log("Graze damage roll complete:", slashingDamage);
+        return;
+    }
+    
+    // Handle normal or critical hits from here down
+    
+    // Base number of dice for lightning damage
     const numLightningDice = isCritical ? 2 : 1;
     
     // Roll lightning damage using our dice utility
