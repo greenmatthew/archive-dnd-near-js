@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DnD-Near - Your Custom D&D Tool</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="dnd-calculator">
+        <h2 class="calculator-title">Solstora D&D Tool Suite</h2>
+        
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="dice-roller">Dice Roller</button>
+                <button class="tab-button" data-tab="custom-calculator">Solstora Calculator</button>
+            </div>
+            
+            <!-- Dice Roller Tab -->
+            <div id="dice-roller" class="tab-content active">
+                <div class="dice-section">
+                    <button class="dice-button" data-dice="4">D4</button>
+                    <button class="dice-button" data-dice="6">D6</button>
+                    <button class="dice-button" data-dice="8">D8</button>
+                    <button class="dice-button" data-dice="10">D10</button>
+                    <button class="dice-button" data-dice="12">D12</button>
+                    <button class="dice-button" data-dice="20">D20</button>
+                    <button class="dice-button" data-dice="100">D100</button>
+                </div>
+                
+                <div class="modifier-section">
+                    <label>
+                        Number of dice: 
+                        <input type="number" id="dice-quantity" class="quantity-input" value="1" min="1" max="20">
+                    </label>
+                    <label>
+                        Modifier: 
+                        <input type="number" id="modifier" class="modifier-input" value="0">
+                    </label>
+                </div>
+                
+                <button id="roll-button" class="roll-button">Roll!</button>
+                
+                <div class="result-section">
+                    <div class="result-display" id="result">-</div>
+                    <div class="result-details" id="result-details"></div>
+                </div>
+                
+                <div class="advanced-section">
+                    <div class="custom-roll-section">
+                        <input type="number" id="custom-quantity" class="quantity-input" value="1" min="1" max="20">
+                        <span>d</span>
+                        <input type="number" id="custom-dice" value="20" min="1" max="1000">
+                        +
+                        <input type="number" id="custom-modifier" class="modifier-input" value="0">
+                        <button id="custom-roll-button" class="dice-button">Roll Custom</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Custom Calculator Tab -->
+            <div id="custom-calculator" class="tab-content">
+                <h3>Solstora Calculator</h3>
+                <div class="solstora-description">
+                    <div class="item-image-container">
+                        <img src="https://darksouls3.wiki.fextralife.com/file/Dark-Souls-3/astora_greatsword.png" alt="Solstora Greatsword" class="item-image">
+                    </div>
+                    <div class="item-description">
+                        <h4>Solstora</h4>
+                        <p class="weapon-type">Greatsword (Heavy, Two-Handed, Graze)</p>
+                        <div class="weapon-properties">
+                            <div class="property"><strong>Attack Type:</strong> Melee</div>
+                            <div class="property"><strong>Reach:</strong> 5ft</div>
+                            <div class="property"><strong>Weight:</strong> 6 lbs</div>
+                            <div class="property damage-row"><strong>Damage:</strong> 
+                                <span class="damage-value">
+                                    2d6+<span id="damage-str-mod">4</span> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 17" class="damage-icon slashing-icon">
+                                        <path fill="#242528" d="M0,6s7.62,3.35,14.18,5.85l1-2.33,1.06.41-1.59,2.94L19,15.22l-.49,1.1-4.22-2.16L12.9,17l-1.31-.41,1-1.88S3.47,9.6,0,6Z"></path>
+                                        <path fill="#242528" d="M3,5A14.91,14.91,0,0,1,14,0S7.56.94,5,6Z"></path>
+                                        <path fill="#242528" d="M7,6.45a8.13,8.13,0,0,1,6-2.73S9.49,4.24,8.09,7Z"></path>
+                                        <path fill="#242528" d="M10,7.89A5.65,5.65,0,0,1,14.17,6a4.92,4.92,0,0,0-3.41,2.27Z"></path>
+                                    </svg>
+                                    Slashing + 1d6
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10.67 16" class="damage-icon lightning-icon">
+                                        <path fill="#242528" d="M3.62,0H9.33L6.07,6.67h4.6L1.33,16l1.9-6.67H0Z"></path>
+                                    </svg>
+                                    Lightning
+                                </span>
+                            </div>
+                            <div class="property">
+                                <strong>Damage Type:</strong> 
+                                <span class="damage-type">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 17" class="damage-icon slashing-icon">
+                                        <path fill="#242528" d="M0,6s7.62,3.35,14.18,5.85l1-2.33,1.06.41-1.59,2.94L19,15.22l-.49,1.1-4.22-2.16L12.9,17l-1.31-.41,1-1.88S3.47,9.6,0,6Z"></path>
+                                        <path fill="#242528" d="M3,5A14.91,14.91,0,0,1,14,0S7.56.94,5,6Z"></path>
+                                        <path fill="#242528" d="M7,6.45a8.13,8.13,0,0,1,6-2.73S9.49,4.24,8.09,7Z"></path>
+                                        <path fill="#242528" d="M10,7.89A5.65,5.65,0,0,1,14.17,6a4.92,4.92,0,0,0-3.41,2.27Z"></path>
+                                    </svg>
+                                    Slashing +
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10.67 16" class="damage-icon lightning-icon">
+                                        <path fill="#242528" d="M3.62,0H9.33L6.07,6.67h4.6L1.33,16l1.9-6.67H0Z"></path>
+                                    </svg>
+                                    Lightning
+                                </span>
+                            </div>
+                        </div>
+                        <p>A sword with no currently known origin, it bends to the will of its owner, only being able to be used by those who exude radiance in any shape or form.</p>
+                        <p><em>"Radiance is a virtue, nevertheless, I became an Undead to pursue this!" - Solaire of Astora</em></p>
+                        <p><em>"I owe this to you. Thank you. Truly. ****** we've done it. We really have..." - Unknown</em></p>
+                    </div>
+                </div>
+                <p>Calculate your attack rolls with the legendary Solstora.</p>
+                
+                <!-- Weapon Attack Calculator -->
+                <div class="custom-calculator">
+                    <div class="form-group">
+                        <label>Strength Score:</label>
+                        <input type="number" id="str-score" class="form-control" value="10" min="1" max="30">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Strength Modifier:</label>
+                        <input type="text" id="str-mod" class="form-control" readonly value="+0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Proficiency Bonus:</label>
+                        <input type="number" id="prof-bonus" class="form-control" value="2" min="0" max="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Additional Attack Bonus:</label>
+                        <input type="number" id="attack-bonus" class="form-control" value="0" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Total Attack Modifier:</label>
+                        <input type="text" id="total-attack-mod" class="form-control" readonly value="+2">
+                    </div>
+                    
+                    <div class="combat-features">
+                        <h4>Combat Features</h4>
+                        <div class="feature-checkbox">
+                            <input type="checkbox" id="weapon-mastery" name="weapon-mastery">
+                            <label for="weapon-mastery">Greatsword Weapon Mastery (Proficient)</label>
+                        </div>
+                        <div class="feature-checkbox">
+                            <input type="checkbox" id="great-weapon-master" name="great-weapon-master">
+                            <label for="great-weapon-master">Great Weapon Master</label>
+                        </div>
+                        <div class="feature-checkbox">
+                            <input type="checkbox" id="great-weapon-fighting" name="great-weapon-fighting">
+                            <label for="great-weapon-fighting">Great Weapon Fighting</label>
+                        </div>
+                        <div class="feature-checkbox">
+                            <input type="checkbox" id="savage-attacker" name="savage-attacker">
+                            <label for="savage-attacker">Savage Attacker</label>
+                        </div>
+                    </div>
+                    
+                    <div class="roll-options">
+                        <div class="roll-option-title">Roll With:</div>
+                        <div class="roll-options-container">
+                            <label class="roll-option-card">
+                                <input type="radio" name="roll-type" value="advantage" id="roll-advantage">
+                                <div class="option-content">
+                                    <div class="option-icon advantage-icon">
+                                        <svg viewBox="0 0 48 48">
+                                            <g>
+                                                <polygon fill="#fff" points="33 6 38 36 10 36 16 6"></polygon>
+                                                <polygon fill="#2C9400" points="24 14 28 26 20 26 24 14"></polygon>
+                                                <path fill="#2C9400" d="M44.39,12.1,23.89.39,3.5,12.29,3.61,35.9l20.5,11.71L44.5,35.71ZM31,36l-2-6H19l-2,6H10L21,8h6L38,36Z"></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="option-label">Advantage</div>
+                                </div>
+                            </label>
+                            
+                            <label class="roll-option-card">
+                                <input type="radio" name="roll-type" value="normal" id="roll-normal" checked>
+                                <div class="option-content">
+                                    <div class="option-icon normal-icon">
+                                        <svg viewBox="0 0 16 18">
+                                            <path d="M8 0L0 4.28571V12.9714L8 17.2571L15.4286 13.2571L16 12.9143V4.28571L8 0ZM6.85714 4.74286L3.48571 9.77143L1.37143 5.2L6.85714 4.74286ZM4.57143 10.2857L8 5.08571L11.4286 10.2857H4.57143ZM12.4571 9.77143L9.14286 4.74286L14.5714 5.14286L12.4571 9.77143ZM8.57143 1.6L12.8 3.88571L8.57143 3.54286V1.6ZM7.42857 1.6V3.54286L3.2 3.88571L7.42857 1.6ZM1.14286 7.31429L2.68571 10.7429L1.14286 11.6571V7.31429ZM1.71429 12.6286L3.25714 11.7143L5.77143 14.8571L1.71429 12.6286ZM4.57143 11.4286H10.8571L8 15.7143L4.57143 11.4286ZM10.2286 14.8L12.7429 11.6571L14.2857 12.5714L10.2286 14.8ZM13.4286 10.8L13.3143 10.7429L14.8571 7.31429V11.6571L13.4286 10.8Z" fill="#8A9BA8"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="option-label">Normal</div>
+                                </div>
+                            </label>
+                            
+                            <label class="roll-option-card">
+                                <input type="radio" name="roll-type" value="disadvantage" id="roll-disadvantage">
+                                <div class="option-content">
+                                    <div class="option-icon disadvantage-icon">
+                                        <svg viewBox="0 0 48 48">
+                                            <g>
+                                                <polygon fill="#fff" points="35 8 36 39 12 39 14 8"></polygon>
+                                                <path fill="#b00000" d="M27.38,17.75a9.362,9.362,0,0,1,1.44,5.68v1.12a9.4423,9.4423,0,0,1-1.44,5.71A5.21983,5.21983,0,0,1,23,32H21V16h2A5.19361,5.19361,0,0,1,27.38,17.75Z"></path>
+                                                <path fill="#b00000" d="M44.39,12.1,23.89.39,3.5,12.29,3.61,35.9l20.5,11.71L44.5,35.71ZM35.21,24.55a13.50293,13.50293,0,0,1-1.5,6.41,11.09308,11.09308,0,0,1-4.25,4.42A12.00926,12.00926,0,0,1,23.34,37H15V11h8.16a12.35962,12.35962,0,0,1,6.2,1.56,10.97521,10.97521,0,0,1,4.29,4.41,13.31084,13.31084,0,0,1,1.56,6.39Z"></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="option-label">Disadvantage</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button id="roll-attack" class="roll-button">Roll to Hit</button>
+                    
+                    <button id="roll-damage" class="roll-button damage-roll-button">Roll Damage</button>
+                    
+                    <div class="result-section">
+                        <div class="result-display" id="attack-result">-</div>
+                        <div class="result-details" id="attack-result-details"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Shared History Section -->
+        <div class="history-section">
+            <h3>Roll History</h3>
+            <div class="history-list" id="history-list"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript files -->
+    <script src="js/dice-roller.js"></script>
+    <script src="js/weapon-calculator.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
