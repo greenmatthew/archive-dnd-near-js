@@ -82,21 +82,24 @@ function rollWeaponAttack() {
     
     if (rollType === 'normal') {
         // Normal roll - just one d20
-        d20Roll = Math.floor(Math.random() * 20) + 1;
+        d20Roll = rollD20();
         resultDetails = `d20 (${d20Roll})`;
     } else if (rollType === 'advantage') {
         // Advantage - roll 2d20 and take higher
-        d20Roll = Math.floor(Math.random() * 20) + 1;
-        secondD20 = Math.floor(Math.random() * 20) + 1;
-        d20Roll = Math.max(d20Roll, secondD20);
-        resultDetails = `2d20 (${d20Roll}, ${secondD20}) take higher`;
+        const rolls = rollD20s(2);
+        d20Roll = Math.max(rolls[0], rolls[1]);
+        secondD20 = Math.min(rolls[0], rolls[1]);
+        resultDetails = `2d20 (${rolls[0]}, ${rolls[1]}) take higher`;
     } else if (rollType === 'disadvantage') {
         // Disadvantage - roll 2d20 and take lower
-        d20Roll = Math.floor(Math.random() * 20) + 1;
-        secondD20 = Math.floor(Math.random() * 20) + 1;
-        d20Roll = Math.min(d20Roll, secondD20);
-        resultDetails = `2d20 (${d20Roll}, ${secondD20}) take lower`;
+        const rolls = rollD20s(2);
+        d20Roll = Math.min(rolls[0], rolls[1]);
+        secondD20 = Math.max(rolls[0], rolls[1]);
+        resultDetails = `2d20 (${rolls[0]}, ${rolls[1]}) take lower`;
     }
+
+    // Force 20 for debugging
+    d20Roll = 20;
     
     const totalMod = calculateTotalAttackMod();
     const totalAttack = d20Roll + totalMod;
@@ -109,6 +112,7 @@ function rollWeaponAttack() {
     // Check for critical hit or miss
     if (d20Roll === 20) {
         resultDetails += " - CRITICAL HIT!";
+        document.getElementById('damage-roll-critical').checked = true;
     } else if (d20Roll === 1) {
         resultDetails += " - CRITICAL MISS!";
     }
@@ -161,11 +165,9 @@ function rollWeaponDamage() {
     // Base number of dice
     const numLightningDice = isCritical ? 2 : 1;
     
-    for (let i = 0; i < numLightningDice; i++) {
-        const roll = Math.floor(Math.random() * 6) + 1;
-        lightningRolls.push(roll);
-        lightningDamage += roll;
-    }
+    // Roll lightning damage using our dice utility
+    lightningRolls = rollD6s(numLightningDice);
+    lightningDamage = lightningRolls.reduce((sum, roll) => sum + roll, 0);
     
     // Handle Savage Attacker feature
     if (isSavageAttacker) {
@@ -185,17 +187,15 @@ function rollWeaponDamage() {
             total: 0
         };
         
-        // Roll dice for each set
+        // Roll dice for each set using our dice utility
+        set1.original = rollD6s(numSlashingDice);
+        set2.original = rollD6s(numSlashingDice);
+        
+        // Apply Great Weapon Fighting if active
         for (let i = 0; i < numSlashingDice; i++) {
-            const roll1 = Math.floor(Math.random() * 6) + 1;
-            const roll2 = Math.floor(Math.random() * 6) + 1;
-            
-            set1.original.push(roll1);
-            set2.original.push(roll2);
-            
-            // Apply Great Weapon Fighting if active
-            set1.rolls.push(isGWF && roll1 <= 2 ? 3 : roll1);
-            set2.rolls.push(isGWF && roll2 <= 2 ? 3 : roll2);
+            // Apply Great Weapon Fighting (reroll 1s and 2s)
+            set1.rolls.push(isGWF && set1.original[i] <= 2 ? 3 : set1.original[i]);
+            set2.rolls.push(isGWF && set2.original[i] <= 2 ? 3 : set2.original[i]);
             
             set1.total += set1.rolls[i];
             set2.total += set2.rolls[i];
@@ -246,21 +246,19 @@ function rollWeaponDamage() {
         // Roll slashing damage dice (doubled for critical hit)
         const numSlashingDice = isCritical ? 4 : 2; // 2d6 becomes 4d6 on crit
         
+        // Use our dice utility to roll the dice
+        let slashingOriginal = rollD6s(numSlashingDice);
         let slashingRolls = [];
-        let slashingOriginal = [];
         
         for (let i = 0; i < numSlashingDice; i++) {
-            const roll = Math.floor(Math.random() * 6) + 1;
-            slashingOriginal.push(roll);
-            
             // Apply Great Weapon Fighting (reroll 1s and 2s)
-            const finalRoll = isGWF && roll <= 2 ? 3 : roll;
+            const finalRoll = isGWF && slashingOriginal[i] <= 2 ? 3 : slashingOriginal[i];
             slashingRolls.push(finalRoll);
             diceTotal += finalRoll;
             
             // Add to damage breakdown
-            if (isGWF && roll <= 2) {
-                damageBreakdown.push(`${finalRoll} (1d6: rolled ${roll} → 3 from Great Weapon Fighting) ${slashingIcon} Slashing`);
+            if (isGWF && slashingOriginal[i] <= 2) {
+                damageBreakdown.push(`${finalRoll} (1d6: rolled ${slashingOriginal[i]} → 3 from Great Weapon Fighting) ${slashingIcon} Slashing`);
             } else {
                 damageBreakdown.push(`${finalRoll} (1d6) ${slashingIcon} Slashing`);
             }
