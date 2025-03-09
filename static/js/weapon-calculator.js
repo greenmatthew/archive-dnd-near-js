@@ -112,6 +112,9 @@ function rollWeaponAttack() {
         document.getElementById('damage-roll-critical').checked = true;
     } else if (d20Roll === 1) {
         resultDetails += " - CRITICAL MISS!";
+        document.getElementById('damage-roll-normal').checked = true;
+    } else {
+        document.getElementById('damage-roll-normal').checked = true;
     }
     
     document.getElementById('attack-result-details').textContent = resultDetails;
