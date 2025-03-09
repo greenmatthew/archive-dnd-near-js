@@ -131,6 +131,10 @@ function rollWeaponDamage() {
     const strMod = calculateStrMod();
     const profBonus = parseInt(document.getElementById('prof-bonus').value) || 2;
     
+    // Check if this is a critical hit
+    const attackType = document.querySelector('input[name="damage-roll-type"]:checked').value;
+    const isCritical = attackType === 'critical';
+    
     // Check which combat features are active
     const isGWM = document.getElementById('great-weapon-master').checked;
     const isGWF = document.getElementById('great-weapon-fighting').checked;
@@ -149,50 +153,60 @@ function rollWeaponDamage() {
     let diceTotal = 0;
     let chosenRoll = 1; // For Savage Attacker: 1 or 2
     
-    // Roll for lightning damage (not affected by Savage Attacker)
-    const lightningRoll = Math.floor(Math.random() * 6) + 1;
+    // Roll for lightning damage (affected by critical hit)
+    // If critical, roll 2d6 instead of 1d6
+    let lightningDamage = 0;
+    let lightningRolls = [];
+    
+    // Base number of dice
+    const numLightningDice = isCritical ? 2 : 1;
+    
+    for (let i = 0; i < numLightningDice; i++) {
+        const roll = Math.floor(Math.random() * 6) + 1;
+        lightningRolls.push(roll);
+        lightningDamage += roll;
+    }
     
     // Handle Savage Attacker feature
     if (isSavageAttacker) {
+        // Determine number of dice to roll (doubled for critical hit)
+        const numSlashingDice = isCritical ? 4 : 2; // 2d6 becomes 4d6 on crit
+        
         // Roll two sets of dice
         let set1 = {
-            d6Roll1: Math.floor(Math.random() * 6) + 1,
-            d6Roll2: Math.floor(Math.random() * 6) + 1,
-            original1: 0,
-            original2: 0
+            rolls: [],
+            original: [],
+            total: 0
         };
         
         let set2 = {
-            d6Roll1: Math.floor(Math.random() * 6) + 1,
-            d6Roll2: Math.floor(Math.random() * 6) + 1,
-            original1: 0,
-            original2: 0
+            rolls: [],
+            original: [],
+            total: 0
         };
         
-        // Store original values before Great Weapon Fighting
-        set1.original1 = set1.d6Roll1;
-        set1.original2 = set1.d6Roll2;
-        set2.original1 = set2.d6Roll1;
-        set2.original2 = set2.d6Roll2;
-        
-        // Apply Great Weapon Fighting if active
-        if (isGWF) {
-            if (set1.d6Roll1 <= 2) set1.d6Roll1 = 3;
-            if (set1.d6Roll2 <= 2) set1.d6Roll2 = 3;
-            if (set2.d6Roll1 <= 2) set2.d6Roll1 = 3;
-            if (set2.d6Roll2 <= 2) set2.d6Roll2 = 3;
+        // Roll dice for each set
+        for (let i = 0; i < numSlashingDice; i++) {
+            const roll1 = Math.floor(Math.random() * 6) + 1;
+            const roll2 = Math.floor(Math.random() * 6) + 1;
+            
+            set1.original.push(roll1);
+            set2.original.push(roll2);
+            
+            // Apply Great Weapon Fighting if active
+            set1.rolls.push(isGWF && roll1 <= 2 ? 3 : roll1);
+            set2.rolls.push(isGWF && roll2 <= 2 ? 3 : roll2);
+            
+            set1.total += set1.rolls[i];
+            set2.total += set2.rolls[i];
         }
         
-        // Calculate totals for each set
-        const set1Total = set1.d6Roll1 + set1.d6Roll2;
-        const set2Total = set2.d6Roll1 + set2.d6Roll2;
-        
         // Choose higher set
-        if (set2Total > set1Total) {
-            diceTotal = set2Total;
+        if (set2.total > set1.total) {
+            diceTotal = set2.total;
             chosenRoll = 2;
         } else {
-            diceTotal = set1Total;
+            diceTotal = set1.total;
             chosenRoll = 1;
         }
         
@@ -201,70 +215,55 @@ function rollWeaponDamage() {
         
         // Format Set 1
         let set1Details = [];
-        if (isGWF && set1.original1 <= 2) {
-            set1Details.push(`${set1.d6Roll1} (1d6: rolled ${set1.original1} → 3 from Great Weapon Fighting)`);
-        } else {
-            set1Details.push(`${set1.d6Roll1} (1d6)`);
-        }
-        
-        if (isGWF && set1.original2 <= 2) {
-            set1Details.push(`${set1.d6Roll2} (1d6: rolled ${set1.original2} → 3 from Great Weapon Fighting)`);
-        } else {
-            set1Details.push(`${set1.d6Roll2} (1d6)`);
+        for (let i = 0; i < numSlashingDice; i++) {
+            if (isGWF && set1.original[i] <= 2) {
+                set1Details.push(`${set1.rolls[i]} (1d6: rolled ${set1.original[i]} → 3 from Great Weapon Fighting)`);
+            } else {
+                set1Details.push(`${set1.rolls[i]} (1d6)`);
+            }
         }
         
         // Format Set 2
         let set2Details = [];
-        if (isGWF && set2.original1 <= 2) {
-            set2Details.push(`${set2.d6Roll1} (1d6: rolled ${set2.original1} → 3 from Great Weapon Fighting)`);
-        } else {
-            set2Details.push(`${set2.d6Roll1} (1d6)`);
+        for (let i = 0; i < numSlashingDice; i++) {
+            if (isGWF && set2.original[i] <= 2) {
+                set2Details.push(`${set2.rolls[i]} (1d6: rolled ${set2.original[i]} → 3 from Great Weapon Fighting)`);
+            } else {
+                set2Details.push(`${set2.rolls[i]} (1d6)`);
+            }
         }
         
-        if (isGWF && set2.original2 <= 2) {
-            set2Details.push(`${set2.d6Roll2} (1d6: rolled ${set2.original2} → 3 from Great Weapon Fighting)`);
-        } else {
-            set2Details.push(`${set2.d6Roll2} (1d6)`);
-        }
-        
-        savageAttackerSection.push(`    Set 1: ${set1Details.join(' + ')} = ${set1Total}${chosenRoll === 1 ? ' [CHOSEN]' : ''}`);
-        savageAttackerSection.push(`    Set 2: ${set2Details.join(' + ')} = ${set2Total}${chosenRoll === 2 ? ' [CHOSEN]' : ''}`);
+        savageAttackerSection.push(`    Set 1: ${set1Details.join(' + ')} = ${set1.total}${chosenRoll === 1 ? ' [CHOSEN]' : ''}`);
+        savageAttackerSection.push(`    Set 2: ${set2Details.join(' + ')} = ${set2.total}${chosenRoll === 2 ? ' [CHOSEN]' : ''}`);
         
         // Add slashing icon to the chosen set
-        savageAttackerSection.push(`    → Using Set ${chosenRoll}: ${chosenRoll === 1 ? set1Total : set2Total} ${slashingIcon} Slashing`);
+        savageAttackerSection.push(`    → Using Set ${chosenRoll}: ${chosenRoll === 1 ? set1.total : set2.total} ${slashingIcon} Slashing`);
         
         // Add the chosen roll total to the main damage breakdown
         damageBreakdown.push(`${diceTotal} ${slashingIcon} Slashing`);
     } else {
         // Standard rolls without Savage Attacker
-        // Roll 2d6 for base slashing damage
-        let d6Roll1 = Math.floor(Math.random() * 6) + 1;
-        let d6Roll2 = Math.floor(Math.random() * 6) + 1;
+        // Roll slashing damage dice (doubled for critical hit)
+        const numSlashingDice = isCritical ? 4 : 2; // 2d6 becomes 4d6 on crit
         
-        // Apply Great Weapon Fighting (reroll 1s and 2s)
-        let d6Roll1Original = d6Roll1;
-        let d6Roll2Original = d6Roll2;
+        let slashingRolls = [];
+        let slashingOriginal = [];
         
-        if (isGWF) {
-            if (d6Roll1 <= 2) d6Roll1 = 3;
-            if (d6Roll2 <= 2) d6Roll2 = 3;
-        }
-        
-        // Calculate base slashing damage
-        diceTotal = d6Roll1 + d6Roll2;
-        
-        // First d6 slashing
-        if (isGWF && d6Roll1Original <= 2) {
-            damageBreakdown.push(`${d6Roll1} (1d6: rolled ${d6Roll1Original} → 3 from Great Weapon Fighting) ${slashingIcon} Slashing`);
-        } else {
-            damageBreakdown.push(`${d6Roll1} (1d6) ${slashingIcon} Slashing`);
-        }
-        
-        // Second d6 slashing
-        if (isGWF && d6Roll2Original <= 2) {
-            damageBreakdown.push(`${d6Roll2} (1d6: rolled ${d6Roll2Original} → 3 from Great Weapon Fighting) ${slashingIcon} Slashing`);
-        } else {
-            damageBreakdown.push(`${d6Roll2} (1d6) ${slashingIcon} Slashing`);
+        for (let i = 0; i < numSlashingDice; i++) {
+            const roll = Math.floor(Math.random() * 6) + 1;
+            slashingOriginal.push(roll);
+            
+            // Apply Great Weapon Fighting (reroll 1s and 2s)
+            const finalRoll = isGWF && roll <= 2 ? 3 : roll;
+            slashingRolls.push(finalRoll);
+            diceTotal += finalRoll;
+            
+            // Add to damage breakdown
+            if (isGWF && roll <= 2) {
+                damageBreakdown.push(`${finalRoll} (1d6: rolled ${roll} → 3 from Great Weapon Fighting) ${slashingIcon} Slashing`);
+            } else {
+                damageBreakdown.push(`${finalRoll} (1d6) ${slashingIcon} Slashing`);
+            }
         }
     }
     
@@ -275,7 +274,7 @@ function rollWeaponDamage() {
     }
     
     // Add remaining damage components
-    damageBreakdown.push(`${strMod} (from Strength Mod.) ${slashingIcon} Slashing`);
+    damageBreakdown.push(`${strMod} (from Strength Modifier) ${slashingIcon} Slashing`);
     
     // Add Great Weapon Master bonus damage if active
     if (isGWM) {
@@ -283,8 +282,12 @@ function rollWeaponDamage() {
     }
     
     // Add lightning damage
-    let lightningDamage = lightningRoll;
-    damageBreakdown.push(`${lightningRoll} (1d6) ${lightningIcon} Lightning`);
+    // Format lightning damage breakdown
+    if (isCritical) {
+        damageBreakdown.push(`${lightningRolls.join(' + ')} (${numLightningDice}d6) ${lightningIcon} Lightning`);
+    } else {
+        damageBreakdown.push(`${lightningDamage} (1d6) ${lightningIcon} Lightning`);
+    }
     
     // Calculate total damage
     let totalDamage = slashingDamage + lightningDamage;
@@ -294,8 +297,13 @@ function rollWeaponDamage() {
     document.getElementById('attack-result').innerHTML = damageByType;
     document.getElementById('attack-result-details').textContent = "";
     
+    // Create header for history text
+    let historyHeader = isCritical ? 
+        `CRITICAL HIT! Damage roll (double dice): ` : 
+        `Damage roll: `;
+    
     // Add to history with damage breakdown and totals by type
-    let historyText = `Damage roll: ${slashingDamage} ${slashingIcon} Slashing + ${lightningDamage} ${lightningIcon} Lightning (${totalDamage} total)`;
+    let historyText = `${historyHeader}${slashingDamage} ${slashingIcon} Slashing + ${lightningDamage} ${lightningIcon} Lightning (${totalDamage} total)`;
     
     // Add Savage Attacker section if used
     if (isSavageAttacker) {
@@ -306,6 +314,9 @@ function rollWeaponDamage() {
     historyText += `\n${damageBreakdown.join('\n+ ')}`;
     
     addToHistory(historyText);
+    
+    // Reset to normal damage roll after completion
+    document.getElementById('damage-roll-normal').checked = true;
     
     console.log("Damage roll complete:", totalDamage);
 }

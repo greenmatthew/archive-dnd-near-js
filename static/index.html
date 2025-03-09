@@ -203,9 +203,44 @@
                     </div>
                     
                     <button id="roll-attack" class="roll-button">Roll to Hit</button>
-                    
+    
+                    <!-- Damage Roll Options -->
+                    <div class="roll-options">
+                        <div class="roll-option-title">Damage Roll Type:</div>
+                        <div class="roll-options-container">
+                            <label class="roll-option-card">
+                                <input type="radio" name="damage-roll-type" value="normal" id="damage-roll-normal" checked>
+                                <div class="radio-indicator"></div>
+                                <div class="option-content">
+                                    <div class="option-icon normal-icon">
+                                        <svg viewBox="0 0 16 18">
+                                            <path d="M8 0L0 4.28571V12.9714L8 17.2571L15.4286 13.2571L16 12.9143V4.28571L8 0ZM6.85714 4.74286L3.48571 9.77143L1.37143 5.2L6.85714 4.74286ZM4.57143 10.2857L8 5.08571L11.4286 10.2857H4.57143ZM12.4571 9.77143L9.14286 4.74286L14.5714 5.14286L12.4571 9.77143ZM8.57143 1.6L12.8 3.88571L8.57143 3.54286V1.6ZM7.42857 1.6V3.54286L3.2 3.88571L7.42857 1.6ZM1.14286 7.31429L2.68571 10.7429L1.14286 11.6571V7.31429ZM1.71429 12.6286L3.25714 11.7143L5.77143 14.8571L1.71429 12.6286ZM4.57143 11.4286H10.8571L8 15.7143L4.57143 11.4286ZM10.2286 14.8L12.7429 11.6571L14.2857 12.5714L10.2286 14.8ZM13.4286 10.8L13.3143 10.7429L14.8571 7.31429V11.6571L13.4286 10.8Z" fill="#8A9BA8"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="option-label">Normal</div>
+                                </div>
+                            </label>
+                            
+                            <label class="roll-option-card">
+                                <input type="radio" name="damage-roll-type" value="critical" id="damage-roll-critical">
+                                <div class="radio-indicator"></div>
+                                <div class="option-content">
+                                    <div class="option-icon critical-icon">
+                                        <svg viewBox="0 0 48 48">
+                                            <g>
+                                                <circle cx="24" cy="24" r="22" fill="#FF5555" stroke="#FFFFFF" stroke-width="2"/>
+                                                <path d="M24 10L26 18H34L28 24L30 32L24 28L18 32L20 24L14 18H22L24 10Z" fill="#FFFFFF"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="option-label">Critical Hit</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
                     <button id="roll-damage" class="roll-button damage-roll-button">Roll Damage</button>
-                    
+
                     <div class="result-section">
                         <div class="result-display" id="attack-result">-</div>
                         <div class="result-details" id="attack-result-details"></div>
