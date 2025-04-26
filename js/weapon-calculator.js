@@ -208,7 +208,7 @@ function rollWeaponDamage() {
     const numLightningDice = isCritical ? 2 : 1;
     
     // Roll lightning damage using our dice utility
-    lightningRolls = rollD6s(numLightningDice);
+    lightningRolls = rollD8s(numLightningDice);
     lightningDamage = lightningRolls.reduce((sum, roll) => sum + roll, 0);
     
     // Handle Savage Attacker feature
@@ -324,9 +324,9 @@ function rollWeaponDamage() {
     // Add lightning damage
     // Format lightning damage breakdown
     if (isCritical) {
-        damageBreakdown.push(`${lightningRolls.join(' + ')} (${numLightningDice}d6) ${lightningIcon} Lightning`);
+        damageBreakdown.push(`${lightningRolls.join(' + ')} (${numLightningDice}d8) ${lightningIcon} Lightning`);
     } else {
-        damageBreakdown.push(`${lightningDamage} (1d6) ${lightningIcon} Lightning`);
+        damageBreakdown.push(`${lightningDamage} (1d8) ${lightningIcon} Lightning`);
     }
     
     // Calculate total damage
