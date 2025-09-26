@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .controls {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        label {
+            font-weight: bold;
+            color: #4a5568;
+        }
+        input, select {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            background: #f8fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .file-input-wrapper:hover {
+            border-color: #667eea;
+            background: #edf2f7;
+        }
+        .file-input-wrapper.dragover {
+            border-color: #667eea;
+            background: #bee3f8;
+        }
+        #imageInput {
+            position: absolute;
+            left: -9999px;
+        }
+        .file-input-text {
+            color: #4a5568;
+            font-size: 16px;
+        }
+        .current-file {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #e6fffa;
+            border: 1px solid #38b2ac;
+            border-radius: 6px;
+            color: #234e52;
+            font-size: 14px;
+        }
+        .preview {
+            text-align: center;
+            margin: 30px 0;
+        }
+        canvas {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin: 10px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .download-section {
+            text-align: center;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .slider {
+            flex: 1;
+        }
+        .slider-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: #4a5568;
+        }
+        .padding-control {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 10px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ Image to Icon Generator</h1>
+        
+        <div class="controls">
+            <div>
+                <label for="imageInput">Select Image:</label>
+                <div class="file-input-wrapper" onclick="document.getElementById('imageInput').click()">
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    <div class="file-input-text">
+                        📁 Click to select an image or drag & drop<br>
+                        <small>Supports: PNG, JPG, SVG, GIF, WebP</small>
+                    </div>
+                    <div id="currentFile" class="current-file" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <div>
+                <label for="background">Background Color:</label>
+                <input type="color" id="background" value="#667eea">
+            </div>
+            
+            <div>
+                <label for="shape">Shape:</label>
+                <select id="shape">
+                    <option value="circle">Circle</option>
+                    <option value="rounded">Rounded Square</option>
+                    <option value="square">Square</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="padding">Image Padding (%):</label>
+                <div class="padding-control">
+                    <span>-30%</span>
+                    <input type="range" id="padding" min="-30" max="40" value="15" class="slider">
+                    <span class="slider-value" id="paddingValue">15%</span>
+                </div>
+                <small style="color: #718096; margin-top: 5px; display: block;">
+                    Negative values crop/zoom into the image to remove margins
+                </small>
+            </div>
+        </div>
+        
+        <div class="preview">
+            <h3>Preview & Download</h3>
+            <div id="previewArea" style="display: none;">
+                <canvas id="canvas192" width="192" height="192"></canvas>
+                <canvas id="canvas512" width="512" height="512"></canvas>
+            </div>
+            <div class="download-section">
+                <button id="download192" onclick="downloadIcon(192)" disabled>Download 192x192</button>
+                <button id="download512" onclick="downloadIcon(512)" disabled>Download Both Sizes</button>
+                <button id="downloadBoth" onclick="downloadBoth()" disabled>Download ZIP</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentImage = null;
+        
+        function setupFileInput() {
+            const fileInput = document.getElementById('imageInput');
+            const wrapper = document.querySelector('.file-input-wrapper');
+            
+            // File input change
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Drag and drop
+            wrapper.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                wrapper.classList.add('dragover');
+            });
+            
+            wrapper.addEventListener('dragleave', () => {
+                wrapper.classList.remove('dragover');
+            });
+            
+            wrapper.addEventListener('drop', (e) => {
+                e.preventDefault();
+                wrapper.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+        }
+        
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+        
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file.');
+                return;
+            }
+            
+            const currentFileDiv = document.getElementById('currentFile');
+            currentFileDiv.textContent = `Selected: ${file.name}`;
+            currentFileDiv.style.display = 'block';
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                loadImage(e.target.result, file.type);
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function loadImage(src, type) {
+            if (type === 'image/svg+xml') {
+                // Handle SVG specially
+                const img = new Image();
+                img.onload = () => {
+                    currentImage = img;
+                    updatePreviews();
+                    enableDownloads();
+                };
+                img.src = src;
+            } else {
+                // Handle other image types
+                const img = new Image();
+                img.onload = () => {
+                    currentImage = img;
+                    updatePreviews();
+                    enableDownloads();
+                };
+                img.src = src;
+            }
+        }
+        
+        function drawIcon(canvas, size) {
+            if (!currentImage) return;
+            
+            const ctx = canvas.getContext('2d');
+            const bgColor = document.getElementById('background').value;
+            const shape = document.getElementById('shape').value;
+            const padding = parseInt(document.getElementById('padding').value);
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Draw background
+            ctx.fillStyle = bgColor;
+            
+            if (shape === 'circle') {
+                ctx.beginPath();
+                ctx.arc(size/2, size/2, size/2, 0, 2 * Math.PI);
+                ctx.fill();
+            } else if (shape === 'rounded') {
+                const radius = size * 0.2;
+                ctx.beginPath();
+                ctx.roundRect(0, 0, size, size, radius);
+                ctx.fill();
+            } else {
+                ctx.fillRect(0, 0, size, size);
+            }
+            
+            // Calculate image size with padding (negative padding = zoom/crop)
+            const paddingPixels = (size * padding) / 100;
+            const imageSize = size - (paddingPixels * 2);
+            
+            // Calculate position to center the image
+            const x = (size - imageSize) / 2;
+            const y = (size - imageSize) / 2;
+            
+            // For negative padding, we need to clip to the background shape
+            if (padding < 0) {
+                ctx.save();
+                
+                // Create clipping path matching the background shape
+                if (shape === 'circle') {
+                    ctx.beginPath();
+                    ctx.arc(size/2, size/2, size/2, 0, 2 * Math.PI);
+                    ctx.clip();
+                } else if (shape === 'rounded') {
+                    const radius = size * 0.2;
+                    ctx.beginPath();
+                    ctx.roundRect(0, 0, size, size, radius);
+                    ctx.clip();
+                } else {
+                    ctx.beginPath();
+                    ctx.rect(0, 0, size, size);
+                    ctx.clip();
+                }
+            }
+            
+            // Draw the image
+            ctx.drawImage(currentImage, x, y, imageSize, imageSize);
+            
+            if (padding < 0) {
+                ctx.restore();
+            }
+        }
+        
+        function updatePreviews() {
+            if (!currentImage) return;
+            
+            drawIcon(document.getElementById('canvas192'), 192);
+            drawIcon(document.getElementById('canvas512'), 512);
+            document.getElementById('previewArea').style.display = 'block';
+        }
+        
+        function enableDownloads() {
+            document.getElementById('download192').disabled = false;
+            document.getElementById('download512').disabled = false;
+            document.getElementById('downloadBoth').disabled = false;
+        }
+        
+        function downloadIcon(size) {
+            if (!currentImage) return;
+            
+            const canvas = document.getElementById(`canvas${size}`);
+            const link = document.createElement('a');
+            link.download = `icon-${size}x${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        async function downloadBoth() {
+            if (!currentImage) return;
+            
+            // Download both sizes with slight delay
+            downloadIcon(192);
+            setTimeout(() => downloadIcon(512), 100);
+        }
+        
+        function updatePaddingValue() {
+            const paddingValue = document.getElementById('padding').value;
+            document.getElementById('paddingValue').textContent = paddingValue + '%';
+            updatePreviews();
+        }
+        
+        // Add event listeners
+        document.getElementById('background').addEventListener('input', updatePreviews);
+        document.getElementById('shape').addEventListener('change', updatePreviews);
+        document.getElementById('padding').addEventListener('input', updatePaddingValue);
+        
+        // Initialize
+        setupFileInput();
+        updatePaddingValue();
+    </script>
+</body>
+</html>
